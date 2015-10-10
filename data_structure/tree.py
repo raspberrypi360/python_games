@@ -70,6 +70,37 @@ class Tree(object):
         lengthL = self._minDepthRecur(node.left, depth)
         lengthR = self._minDepthRecur(node.right, depth)
         return min(lengthL, lengthR)
+    
+    def _sameTreeRecur(self, node1, node2):
+        if node1.val != node2.val:
+            return False
+        if (node1.left != None and node2.left == None) or (node1.left == None and node2.left != None):
+            return False
+        if (node1.right != None and node2.right == None) or (node1.right == None and node2.right != None):
+            return False
+        if node1.left != None and node2.left != None:
+            leftComp = self._sameTreeRecur(node1.left, node2.left)
+            if leftComp == False:
+                return False
+        if node1.right != None and node2.right != None:
+            rightComp = self._sameTreeRecur(node1.right, node2.right)
+            return rightComp
+        return True
+
+    def _symmetricTreeRecur(self, node1, node2):
+        if node1 == None and node2 == None:
+            return True
+        if node1 != None and node2 == None:
+            return False
+        if node1 == None and node2 != None:
+            return False
+        if node1.val != node2.val:
+            return False
+        comp1 = self._symmetricTreeRecur(node1.left, node2.right)
+        if comp1 == False:
+            return False
+        comp2 = self._symmetricTreeRecur(node1.right, node2.left)
+        return comp2
 
     def maxDepth(self):
         depth = 0
@@ -80,10 +111,19 @@ class Tree(object):
         depth = 0
         length = self._minDepthRecur(self._root, depth)
         return length
+    
+    def sameTree(self, tree):
+        if self._root != None and tree._root != None:
+            return self._sameTreeRecur(self._root, tree._root)
+        elif self._root != None and tree._root == None:
+            return False
+        elif self._root == None and tree._root != None:
+            return False
+        else:
+            return True
 
-if __name__ == "__main__":
-    tree = Tree("1, 2, 3, #, #, 4, #, #, #")
-    max = tree.maxDepth()
-    min = tree.minDepth()
-    print(max)
-    print(min)
+    def symmetricTree(self):
+        if self._root == None:
+            return True
+        else:
+            return self._symmetricTreeRecur(self._root.left, self._root.right)
