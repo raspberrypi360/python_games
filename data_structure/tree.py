@@ -102,6 +102,41 @@ class Tree(object):
         comp2 = self._symmetricTreeRecur(node1.right, node2.left)
         return comp2
 
+    def _bstRecur(self, node, minRet):
+        retVal = node.val
+        if node.left == None and node.right == None:
+            return True, node.val
+        if node.left != None:
+            bst, maxVal = self._bstRecur(node.left, False)
+            if not bst or maxVal >= node.val:
+                return False, node.val
+            if minRet:
+                retVal = maxVal
+        if node.right != None:
+            bst, minVal = self._bstRecur(node.right, True)
+            if not bst or minVal <= node.val:
+                return False, node.val
+            if not minRet:
+                retVal = minVal
+        return True, retVal
+
+    def _balancedTreeRecur(self, node):
+        leftHeight = 0
+        rightHeight = 0
+        if node.left == None and node.right == None:
+            return True, 1
+        if node.left != None:
+            balanced, leftHeight = self._balancedTreeRecur(node.left)
+            if balanced == False:
+                return False, 1
+        if node.right != None:
+            balanced, rightHeight = self._balancedTreeRecur(node.right)
+            if balanced == False:
+                return False, 1
+        if leftHeight - rightHeight > 1 or rightHeight - leftHeight > 1:
+            return False, 1
+        return True, max(leftHeight, rightHeight) + 1
+
     def maxDepth(self):
         depth = 0
         length = self._maxDepthRecur(self._root, depth)
@@ -127,3 +162,17 @@ class Tree(object):
             return True
         else:
             return self._symmetricTreeRecur(self._root.left, self._root.right)
+
+    def bst(self):
+        if self._root == None:
+            return True
+        else:
+            bst, minVal = self._bstRecur(self._root, True)
+            return bst
+
+    def balancedTree(self):
+        if self._root == None:
+            return True
+        else:
+            balanced, maxVal = self._balancedTreeRecur(self._root)
+            return balanced

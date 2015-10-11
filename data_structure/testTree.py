@@ -18,6 +18,8 @@ class Test(unittest.TestCase):
         self.trees.append(Tree("1, #, 2, #, #"))
         self.trees.append(Tree("1, 2, 3, #, #, 4, #, #, #"))
         self.trees.append(Tree("1, 2, 2, 3, 4, 4, 3, #, #, #, #, #, #, #, #"))
+        self.trees.append(Tree("5, 3, 7, 2, 4, 6, 8, 1, #, #, #, #, #, #, #, #, #"))
+        self.trees.append(Tree("1, 9, #, 9, #, 9, #, 9, #, #, #"))
 
 
     def tearDown(self):
@@ -33,19 +35,29 @@ class Test(unittest.TestCase):
                     self.assertFalse(tree.sameTree(secondTree))
 
     def testMaxDepth(self):
-        expected = [0, 1, 2, 2, 3, 3]
+        expected = [0, 1, 2, 2, 3, 3, 4, 5]
         for i, tree in enumerate(self.trees):
             self.assertEqual(tree.maxDepth(), expected[i])
 
     def testMinDepth(self):
-        expected = [0, 1, 1, 1, 2, 3]
+        expected = [0, 1, 1, 1, 2, 3, 3, 1]
         for i, tree in enumerate(self.trees):
             self.assertEqual(tree.minDepth(), expected[i])
 
     def testisSymmetric(self):
-        expected = [True, True, False, False, False, True]
+        expected = [True, True, False, False, False, True, False, False]
         for i, tree in enumerate(self.trees):
             self.assertEqual(tree.symmetricTree(), expected[i])
-            
+
+    def testisBST(self):
+        expected = [True, True, False, True, False, False, True, False]
+        for i, tree in enumerate(self.trees):
+            self.assertEqual(tree.bst(), expected[i])
+
+    def testisBalanced(self):
+        expected = [True, True, True, True, True, True, True, False]
+        for i, tree in enumerate(self.trees):
+            self.assertEqual(tree.balancedTree(), expected[i])
+
 if __name__ == "__main__":
     unittest.main()
