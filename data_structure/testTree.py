@@ -5,7 +5,7 @@ Created on Apr 3, 2015
 '''
 import unittest
 from tree import *
-
+from bst import *
 
 class Test(unittest.TestCase):
 
@@ -58,6 +58,19 @@ class Test(unittest.TestCase):
         expected = [True, True, True, True, True, True, True, False]
         for i, tree in enumerate(self.trees):
             self.assertEqual(tree.balancedTree(), expected[i])
+
+    def testFind(self):
+        values = [5, 3, 7, 2, 4, 6, 8]
+        tree = BST("5, 3, 7, 2, 4, 6, 8, #, #, #, #, #, #, #, #")
+        for value in values:
+            self.assertEqual(int(tree.find(value).val), value)
+
+    def testlowestAncestor(self):
+        tree = BST("5, 3, 7, 2, 4, 6, 8, #, #, #, #, #, #, #, #")
+        node2 = tree.find(2)
+        node4 = tree.find(5)
+        node3 = tree.find(5)
+        self.assertEqual(tree.lowestAncestor(node2, node4), node3)
 
 if __name__ == "__main__":
     unittest.main()
