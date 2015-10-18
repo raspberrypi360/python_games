@@ -14,9 +14,10 @@ class TreeNode(object):
 
 class Tree(object):
     def __init__(self, treeStr):
-        self.treeStr = treeStr.split(", ")
         self._root = None
-        self._buildTree()
+        if not (treeStr == None or len(treeStr) == 0):
+            self.treeStr = treeStr.split(", ")
+            self._buildTree()
     
     def __str__(self):
         final = ""
@@ -45,11 +46,15 @@ class Tree(object):
         while queue:
             parent = queue.popleft()
             index += 1
+            if index >= len(self.treeStr):
+                break
             if self.treeStr[index] != "#":
                 node = TreeNode(self.treeStr[index], parent)
                 queue.append(node)
                 parent.left = node
             index += 1
+            if index >= len(self.treeStr):
+                break
             if self.treeStr[index] != "#":
                 node = TreeNode(self.treeStr[index], parent)
                 queue.append(node)
@@ -163,7 +168,7 @@ class Tree(object):
         else:
             return self._symmetricTreeRecur(self._root.left, self._root.right)
 
-    def bst(self):
+    def isBST(self):
         if self._root == None:
             return True
         else:

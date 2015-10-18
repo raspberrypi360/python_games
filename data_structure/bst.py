@@ -9,6 +9,10 @@ from tree import *
 class BST(Tree):
     def __init__(self, treeStr):
         super(BST, self).__init__(treeStr)
+        bst = self.isBST()
+        if not bst:
+            print("Not a binary search tree")
+            self._root = None
 
     def _find(self, value, node):
         val = int(node.val)
@@ -33,6 +37,28 @@ class BST(Tree):
                 return self._lowestAncestorRecur(ancestor.right, node1, node2)
         return None
 
+    def _insertNodeRecur(self, node, value):
+        val = int(node.val)
+        if value == val:
+            return False
+        if value < val:
+            if node.left != None:
+                status = self._insertNodeRecur(node.left, value)
+                if not status:
+                    return False
+            else:
+                node.left = TreeNode(value, node)
+                return True
+        if value > val:
+            if node.right != None:
+                status = self._insertNodeRecur(node.right, value)
+                if not status:
+                    return False
+            else:
+                node.right = TreeNode(value, node)
+                return True
+        return True
+
     def lowestAncestor(self, node1, node2):
         if self._root == None:
             return None
@@ -41,4 +67,15 @@ class BST(Tree):
             return ancestor
 
     def find(self, value):
-        return self._find(value, self._root)
+        if self._root == None:
+            return None
+        else:
+            return self._find(value, self._root)
+
+    def insertNode(self, value):
+        if self._root == None:
+            self._root = TreeNode(value, None)
+        else:
+            status = self._insertNodeRecur(self._root, value)
+            if not status:
+                print("Value already exists")
