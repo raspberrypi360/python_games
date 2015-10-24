@@ -14,6 +14,41 @@ class BST(Tree):
             print("Not a binary search tree")
             self._root = None
 
+    def find(self, value):
+        if self._root == None:
+            return None
+        else:
+            return self._find(value, self._root)
+
+    def insertNode(self, value):
+        if self._root == None:
+            self._root = TreeNode(value, None)
+        else:
+            status = self._insertNodeRecur(self._root, value)
+            if not status:
+                print("Value already exists")
+
+    def minVal(self):
+        if self._root == None:
+            return None
+        else:
+            return self._minValRecur(self._root)
+
+    def nextVal(self, node):
+        if node == None:
+            return None
+        if node.right != None:
+            return self._minValRecur(node.right)
+        if node.parent == None:
+            return None
+        if node == node.parent.left:
+            return node.parent
+        while node != node.parent.left:
+            node = node.parent
+            if node.parent == None:
+                return None
+        return node.parent
+
     def _find(self, value, node):
         val = int(node.val)
         if value == val:
@@ -59,23 +94,14 @@ class BST(Tree):
                 return True
         return True
 
+    def _minValRecur(self, node):
+        if node.left != None:
+            return self._minValRecur(node.left)
+        return node
+
     def lowestAncestor(self, node1, node2):
         if self._root == None:
             return None
         else:
             ancestor = self._lowestAncestorRecur(self._root, node1, node2)
             return ancestor
-
-    def find(self, value):
-        if self._root == None:
-            return None
-        else:
-            return self._find(value, self._root)
-
-    def insertNode(self, value):
-        if self._root == None:
-            self._root = TreeNode(value, None)
-        else:
-            status = self._insertNodeRecur(self._root, value)
-            if not status:
-                print("Value already exists")

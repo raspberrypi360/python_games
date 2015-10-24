@@ -36,6 +36,46 @@ class Tree(object):
                 fqueue.append(parent.right)
         return final
 
+    def maxDepth(self):
+        depth = 0
+        length = self._maxDepthRecur(self._root, depth)
+        return length
+
+    def minDepth(self):
+        depth = 0
+        length = self._minDepthRecur(self._root, depth)
+        return length
+    
+    def sameTree(self, tree):
+        if self._root != None and tree._root != None:
+            return self._sameTreeRecur(self._root, tree._root)
+        elif self._root != None and tree._root == None:
+            return False
+        elif self._root == None and tree._root != None:
+            return False
+        else:
+            return True
+
+    def symmetricTree(self):
+        if self._root == None:
+            return True
+        else:
+            return self._symmetricTreeRecur(self._root.left, self._root.right)
+
+    def isBST(self):
+        if self._root == None:
+            return True
+        else:
+            bst, minVal = self._bstRecur(self._root, True)
+            return bst
+
+    def balancedTree(self):
+        if self._root == None:
+            return True
+        else:
+            balanced, maxVal = self._balancedTreeRecur(self._root)
+            return balanced
+
     def _buildTree(self):
         if self.treeStr[0] == "#":
             return
@@ -141,43 +181,3 @@ class Tree(object):
         if leftHeight - rightHeight > 1 or rightHeight - leftHeight > 1:
             return False, 1
         return True, max(leftHeight, rightHeight) + 1
-
-    def maxDepth(self):
-        depth = 0
-        length = self._maxDepthRecur(self._root, depth)
-        return length
-
-    def minDepth(self):
-        depth = 0
-        length = self._minDepthRecur(self._root, depth)
-        return length
-    
-    def sameTree(self, tree):
-        if self._root != None and tree._root != None:
-            return self._sameTreeRecur(self._root, tree._root)
-        elif self._root != None and tree._root == None:
-            return False
-        elif self._root == None and tree._root != None:
-            return False
-        else:
-            return True
-
-    def symmetricTree(self):
-        if self._root == None:
-            return True
-        else:
-            return self._symmetricTreeRecur(self._root.left, self._root.right)
-
-    def isBST(self):
-        if self._root == None:
-            return True
-        else:
-            bst, minVal = self._bstRecur(self._root, True)
-            return bst
-
-    def balancedTree(self):
-        if self._root == None:
-            return True
-        else:
-            balanced, maxVal = self._balancedTreeRecur(self._root)
-            return balanced

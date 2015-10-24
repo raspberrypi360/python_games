@@ -77,12 +77,32 @@ class Test(unittest.TestCase):
         expected = ["5, #, #", "5, 3, #, #, #", "5, 3, 7, #, #, #, #", "5, 3, 7, 2, #, #, #, #, #", "5, 3, 7, 2, 4, #, #, #, #, #, #", \
                     "5, 3, 7, 2, 4, 6, #, #, #, #, #, #, #", "5, 3, 7, 2, 4, 6, 8, #, #, #, #, #, #, #, #", \
                     "5, 3, 7, 2, 4, 6, 8, 1, #, #, #, #, #, #, #, #, #"]
-        tree = BST("#")
+        tree = BST("")
         for i, value in enumerate(values):
             tree.insertNode(value)
             treeStr2 = str(tree)
             treeStr = expected[i]
             self.assertEqual(treeStr, treeStr2)
-        
+
+    def testminVal(self):
+        values = [5, 7, 3, 2, 4, 6, 8, 1]
+        expected = [5, 5, 3, 2, 2, 2, 2, 1]
+        tree = BST("")
+        for i, value in enumerate(values):
+            tree.insertNode(value)
+            minVal = int(tree.minVal().val)
+            self.assertEqual(minVal, expected[i])
+
+    def testnextVal(self):
+        tree = BST("5, 3, 7, 2, 4, 6, 8, 1")
+        minVal = tree.minVal()
+        nextVal = tree.nextVal(minVal)
+        expected = [2, 3, 4, 5, 6, 7, 8, None]
+        i = 0
+        while nextVal != None:
+            self.assertEqual(int(nextVal.val), expected[i])
+            nextVal = tree.nextVal(nextVal)
+            i += 1
+
 if __name__ == "__main__":
     unittest.main()
