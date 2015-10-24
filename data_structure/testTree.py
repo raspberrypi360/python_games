@@ -93,6 +93,15 @@ class Test(unittest.TestCase):
             minVal = int(tree.minVal().val)
             self.assertEqual(minVal, expected[i])
 
+    def testmaxVal(self):
+        values = [5, 7, 3, 2, 4, 6, 8, 1]
+        expected = [5, 7, 7, 7, 7, 7, 8, 8]
+        tree = BST("")
+        for i, value in enumerate(values):
+            tree.insertNode(value)
+            maxVal = int(tree.maxVal().val)
+            self.assertEqual(maxVal, expected[i])
+
     def testnextVal(self):
         tree = BST("5, 3, 7, 2, 4, 6, 8, 1")
         minVal = tree.minVal()
@@ -103,6 +112,31 @@ class Test(unittest.TestCase):
             self.assertEqual(int(nextVal.val), expected[i])
             nextVal = tree.nextVal(nextVal)
             i += 1
+
+    def testnextValReverse(self):
+        tree = BST("5, 3, 7, 2, 4, 6, 8, 1")
+        maxVal = tree.maxVal()
+        nextVal = tree.nextValReverse(maxVal)
+        expected = [7, 6, 5, 4, 3, 2, 1, None]
+        i = 0
+        while nextVal != None:
+            self.assertEqual(int(nextVal.val), expected[i])
+            nextVal = tree.nextValReverse(nextVal)
+            i += 1
+
+    def testascendingOrder(self):
+        tree = BST("5, 3, 7, 2, 4, 6, 8, 1")
+        nextVal = tree.ascendingOrder()
+        expected = [1, 2, 3, 4, 5, 6, 7, 8]
+        for i, value in enumerate(nextVal):
+            self.assertEqual(int(value.val), expected[i])
+
+    def testdescendingOrder(self):
+        tree = BST("5, 3, 7, 2, 4, 6, 8, 1")
+        nextVal = tree.descendingOrder()
+        expected = [8, 7, 6, 5, 4, 3, 2, 1]
+        for i, value in enumerate(nextVal):
+            self.assertEqual(int(value.val), expected[i])
 
 if __name__ == "__main__":
     unittest.main()

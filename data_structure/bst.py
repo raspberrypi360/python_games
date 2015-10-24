@@ -20,6 +20,13 @@ class BST(Tree):
         else:
             return self._find(value, self._root)
 
+    def lowestAncestor(self, node1, node2):
+        if self._root == None:
+            return None
+        else:
+            ancestor = self._lowestAncestorRecur(self._root, node1, node2)
+            return ancestor
+
     def insertNode(self, value):
         if self._root == None:
             self._root = TreeNode(value, None)
@@ -33,6 +40,12 @@ class BST(Tree):
             return None
         else:
             return self._minValRecur(self._root)
+
+    def maxVal(self):
+        if self._root == None:
+            return None
+        else:
+            return self._maxValRecur(self._root)
 
     def nextVal(self, node):
         if node == None:
@@ -48,6 +61,33 @@ class BST(Tree):
             if node.parent == None:
                 return None
         return node.parent
+
+    def nextValReverse(self, node):
+        if node == None:
+            return None
+        if node.left != None:
+            return self._maxValRecur(node.left)
+        if node.parent == None:
+            return None
+        if node == node.parent.right:
+            return node.parent
+        while node != node.parent.right:
+            node = node.parent
+            if node.parent == None:
+                return None
+        return node.parent
+
+    def ascendingOrder(self):
+        value = self.minVal()
+        while value != None:
+            yield value
+            value = self.nextVal(value)
+
+    def descendingOrder(self):
+        value = self.maxVal()
+        while value != None:
+            yield value
+            value = self.nextValReverse(value)
 
     def _find(self, value, node):
         val = int(node.val)
@@ -99,9 +139,7 @@ class BST(Tree):
             return self._minValRecur(node.left)
         return node
 
-    def lowestAncestor(self, node1, node2):
-        if self._root == None:
-            return None
-        else:
-            ancestor = self._lowestAncestorRecur(self._root, node1, node2)
-            return ancestor
+    def _maxValRecur(self, node):
+        if node.right != None:
+            return self._maxValRecur(node.right)
+        return node
