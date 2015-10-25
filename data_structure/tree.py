@@ -12,6 +12,9 @@ class TreeNode(object):
         self.left = None
         self.right = None
 
+    def __str__(self):
+        return self.val
+
 class Tree(object):
     def __init__(self, treeStr):
         self._root = None
@@ -75,6 +78,33 @@ class Tree(object):
         else:
             balanced, maxVal = self._balancedTreeRecur(self._root)
             return balanced
+
+    def inOrderTraverse(self):
+        return self._inOrderTraverse(self._root)
+
+    def preOrderTraverse(self):
+        return self._preOrderTraverse(self._root)
+
+    def postOrderTraverse(self):
+        return self._postOrderTraverse(self._root)
+
+    def breathFirst(self):
+        if self._root != None:
+            deque = collections.deque()
+            deque.append(self._root)
+            while len(deque) != 0:
+                node = deque.popleft()
+                yield int(node.val)
+                if node.left != None:
+                    deque.append(node.left)
+                if node.right != None:
+                    deque.append(node.right)
+
+    def printPaths(self):
+        return self._printPaths(self._root, [])
+
+    def depthFirst(self):
+        return self._preOrderTraverse(self._root)
 
     def _buildTree(self):
         if self.treeStr[0] == "#":
@@ -181,3 +211,43 @@ class Tree(object):
         if leftHeight - rightHeight > 1 or rightHeight - leftHeight > 1:
             return False, 1
         return True, max(leftHeight, rightHeight) + 1
+
+    def _inOrderTraverse(self, node):
+        if node == None:
+            return
+        if node.left != None:
+            yield from self._inOrderTraverse(node.left)
+        yield node
+        if node.right != None:
+            yield from self._inOrderTraverse(node.right)
+
+    def _preOrderTraverse(self, node):
+        if node == None:
+            return
+        yield node
+        if node.left != None:
+            yield from self._preOrderTraverse(node.left)
+        if node.right != None:
+            yield from self._preOrderTraverse(node.right)
+
+    def _postOrderTraverse(self, node):
+        if node == None:
+            return
+        if node.left != None:
+            yield from self._postOrderTraverse(node.left)
+        if node.right != None:
+            yield from self._postOrderTraverse(node.right)
+        yield node
+
+    def _printPaths(self, node, path):
+        if node == None:
+            return
+        path.append(node)
+        if node.left != None:
+            yield from self._printPaths(node.left, path)
+            path.remove(node.left)
+        if node.right != None:
+            yield from self._printPaths(node.right, path)
+            path.remove(node.right)
+        if node.right == None and node.left == None:
+            yield path

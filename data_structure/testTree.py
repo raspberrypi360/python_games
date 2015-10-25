@@ -138,5 +138,62 @@ class Test(unittest.TestCase):
         for i, value in enumerate(nextVal):
             self.assertEqual(int(value.val), expected[i])
 
+    def testinOrder(self):
+        tree = Tree("")
+        nextVal = tree.inOrderTraverse()
+        self.assertEqual(list(nextVal), [])
+        tree = Tree("5, 3, 7, 2, 4, 6, 8, 1")
+        nextVal = tree.inOrderTraverse()
+        expected = [1, 2, 3, 4, 5, 6, 7, 8]
+        for i, value in enumerate(nextVal):
+            self.assertEqual(int(value.val), expected[i])
+
+    def testpreOrder(self):
+        tree = Tree("")
+        nextVal = tree.preOrderTraverse()
+        self.assertEqual(list(nextVal), [])
+        tree = Tree("5, 3, 7, 2, 4, 6, 8, 1")
+        nextVal = tree.preOrderTraverse()
+        expected = [5, 3, 2, 1, 4, 7, 6, 8]
+        for i, value in enumerate(nextVal):
+            self.assertEqual(int(value.val), expected[i])
+
+    def testpostOrder(self):
+        tree = Tree("")
+        nextVal = tree.postOrderTraverse()
+        self.assertEqual(list(nextVal), [])
+        tree = Tree("5, 3, 7, 2, 4, 6, 8, 1")
+        nextVal = tree.postOrderTraverse()
+        expected = [1, 2, 4, 3, 6, 8, 7, 5]
+        for i, value in enumerate(nextVal):
+            self.assertEqual(int(value.val), expected[i])
+
+    def testprintPaths(self):
+        tree = Tree("5, 3, 7, 2, 4, 6, 8, 1")
+        expected = [[5, 3, 2, 1], [5, 3, 4], [5, 7, 6], [5, 7, 8]]
+        paths = tree.printPaths()
+        for i, path in enumerate(paths):
+            pathCopy = path[:]
+            for j in range(len(pathCopy)):
+                pathCopy[j] = int(pathCopy[j].val)
+            self.assertEqual(pathCopy, expected[i])
+
+    def testbreathFirst(self):
+        tree = Tree("5, 3, 7, 2, 4, 6, 8, 1")
+        expected = [5, 3, 7, 2, 4, 6, 8, 1]
+        nextVal = tree.breathFirst()
+        for i, value in enumerate(nextVal):
+            self.assertEqual(value, expected[i])
+
+    def testdepthFirst(self):
+        tree = Tree("")
+        nextVal = tree.depthFirst()
+        self.assertEqual(list(nextVal), [])
+        tree = Tree("5, 3, 7, 2, 4, 6, 8, 1")
+        nextVal = tree.depthFirst()
+        expected = [5, 3, 2, 1, 4, 7, 6, 8]
+        for i, value in enumerate(nextVal):
+            self.assertEqual(int(value.val), expected[i])
+
 if __name__ == "__main__":
     unittest.main()
