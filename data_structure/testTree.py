@@ -195,5 +195,16 @@ class Test(unittest.TestCase):
         for i, value in enumerate(nextVal):
             self.assertEqual(int(value.val), expected[i])
 
+    def testclosestValue(self):
+        tree = BST("5, 3, 7, 2, 4, 6, 8, 1")
+        self.assertEqual(2, tree.closestValue(2.3))
+        self.assertEqual(3, tree.closestValue(2.6))
+        self.assertEqual(3, tree.closestValue(2.5))
+        self.assertEqual(8, tree.closestValue(8.01))
+        i = 1
+        while i < 8.5:
+            self.assertEqual(round(i), tree.closestValue(i))
+            i+=0.2
+        
 if __name__ == "__main__":
     unittest.main()

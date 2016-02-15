@@ -6,6 +6,7 @@ Created on Oct 3, 2015
 import collections
 from tree import *
 
+
 class BST(Tree):
     def __init__(self, treeStr):
         super(BST, self).__init__(treeStr)
@@ -88,6 +89,32 @@ class BST(Tree):
         while value != None:
             yield value
             value = self.nextValReverse(value)
+
+    def closestValue(self, value):
+        node = self._closestValueRecur(value, self._root)
+        node2 = None
+        if int(node.val) < value:
+            node2 = self.nextVal(node)
+        elif int(node.val) > value:
+            node2 = self.nextValReverse(node)
+        else:
+            return int(node.val)
+        if node2 != None:
+            if abs(value - int(node2.val)) > abs(value - int(node.val)):
+                return int(node.val)
+            else:
+                return int(node2.val)
+        return int(node.val)
+
+    def _closestValueRecur(self, value, node):
+        child = node
+        if value < int(node.val):
+            if node.left != None:
+                child = self._closestValueRecur(value, node.left)
+        elif value > int(node.val):
+            if node.right != None:
+                child = self._closestValueRecur(value, node.right)
+        return child
 
     def _find(self, value, node):
         val = int(node.val)
