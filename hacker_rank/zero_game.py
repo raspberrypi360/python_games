@@ -71,7 +71,7 @@ def outcomes(a):
             if a[i-1] == 0:
                 if a[i] == 0: #100
                     if a[i-3] == 0:
-                        s100 = shift(s010, False)
+                        s100 = shift(s010, True)
                     else:
                         s100 = shift(s110, False)
                     if i==n-1:
@@ -98,13 +98,13 @@ def outcomes(a):
                         winner = s111[2]
     return winner         
 
-
-g = 1
-for a0 in range(g):
-    n = 5
-    sequence = [0, 1, 0, 0, 0]
-    winner = outcomes(sequence)
-    if winner == True:
-        print("Alice")
-    else:
-        print("Bob")
+if __name__ == "__main__":
+    g = 1
+    for a0 in range(g):
+        n = 5
+        sequence = [0, 1, 0, 0, 0]
+        winner = outcomes(sequence)
+        if winner == True:
+            print("Alice")
+        else:
+            print("Bob")
