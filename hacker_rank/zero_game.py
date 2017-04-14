@@ -1,6 +1,11 @@
-def negate(x):
-    return not x;
-
+def shift(s, negateLast):
+    r = s[:]
+    r[0] = s[1]
+    r[1] = s[2]
+    if negateLast:
+        r[2] = not s[2]
+    return r
+    
 def outcomes(a):
     n = len(a)
     if n < 3:
@@ -15,87 +20,80 @@ def outcomes(a):
     s101 = [False, False, False]
     s110 = [False, False, False]
     s111 = [False, False, False]
-    s000p = [False, False, True]
-    s001p = [False, False, False]
-    s010p = [False, False, True]
-    s011p = [False, False, False]
-    s100p = [False, False, False]
-    s101p = [False, False, False]
-    s110p = [False, False, False]
-    s111p = [False, False, False]
     winner = False
     for i in range(3, n):
+        s000p = s000[:]
+        s001p = s001[:]
+        s010p = s010[:]
+        s011p = s011[:]
+        s100p = s100[:]
+        s101p = s101[:]
+        s110p = s110[:]
+        s111p = s111[:]
         if a[i-2] == 0:
             if a[i-1] == 0:
                 if a[i] == 0: #000
-                    s000p = s000[:]
                     if a[i-3] == 0:
-                        s000 = list(map(negate, s000))
+                        s000 = shift(s000, True)
                     else:
-                        s000 = list(map(negate, s100))
+                        s000 = shift(s100, True)
                     if i==n-1:
                         winner = s000[2]
                 else: #001
-                    s001p = s001[:]
                     if a[i-3] == 0:
-                        s001 = s000[:]
+                        s001 = shift(s000, False)
                     else:
-                        s001 = s100[:]
+                        s001 = shift(s100, False)
                     if i==n-1:
                         winner = s001[2]
             else:
                 if a[i] == 0: #010
-                    s010p = s010[:]
                     if a[i-3] == 0:
-                        if n==4:
-                            return False
-                        if a[i-4] == 0:
-                            s010 = s000p[:]
+                        if i==3:
+                            s010 = shift(s000, True)
                         else:
-                            s010 = s100p[:]
+                            if a[i-4] == 0:
+                                s010 = shift(s000p, False)
+                            else:
+                                s010 = shift(s100p, False)
                     else:
-                        s010 = list(map(negate, s100))
+                        s010 = shift(s100, True)
                     if i==n-1:
                         winner = s010[2]
                 else: #011 
-                    s011p = s011[:]
                     if a[i-3] == 0:
-                        s011 = s001[:]
+                        s011 = shift(s001, False)
                     else:
-                        s011 = s101[:]
+                        s011 = shift(s101, False)
                     if i==n-1:
                         winner = s011[2]
         else:
             if a[i-1] == 0:
                 if a[i] == 0: #100
-                    s100p = s100[:]
                     if a[i-3] == 0:
-                        s100 = s010[:]
+                        s100 = shift(s010, False)
                     else:
-                        s100 = s110[:]
+                        s100 = shift(s110, False)
                     if i==n-1:
                         winner = s100[2]
                 else: #101
-                    s101p = s101[:]
                     if a[i-3] == 0:
-                        s101 = s010[:]
+                        s101 = shift(s010, False)
                     else:
-                        s101 = s110[:]
+                        s101 = shift(s110, False)
                     if i==n-1:
                         winner = s101[2]
             else:
                 if a[i] == 0: #110
-                    s110p = s110[:]
                     if a[i-3] == 0:
-                        s110 = s011[:]
+                        s110 = shift(s011, False)
                     else:
-                        s110 = s111[:]
+                        s110 = shift(s111, False)
                     if i==n-1:
                         winner = s110[2]
                 else: #111 
-                    s111p = s111[:]
                     if a[i-3] == 0:
-                        s111 = s011[:]
+                        s111 = shift(s011, False)
                     if i==n-1:
                         winner = s111[2]
     return winner         
@@ -104,7 +102,7 @@ def outcomes(a):
 g = 1
 for a0 in range(g):
     n = 5
-    sequence = [0, 0, 0, 1, 0]
+    sequence = [0, 1, 0, 0, 0]
     winner = outcomes(sequence)
     if winner == True:
         print("Alice")
