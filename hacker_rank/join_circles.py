@@ -75,7 +75,13 @@ def numCombos(r, k):
         length += 1
     return length
 
-def getProduct(k,r):
+def getSquare(r, k):
+    s = 0
+    for i in combinationParentG(r, k):
+        s += getArea(i)
+    return s
+
+def getProduct(r, k):
     n = len(r)
     x2 = 0
     xij = 0;
@@ -95,15 +101,15 @@ def getProduct(k,r):
         p2 *= numi
         nn = ni+1
         numn = nn*(nn-1)//2
-        c1 = numi*nump-1+numn*c1
+        c1 = numi*nump-c1+numn*c1
         pij = 2*xij*c1
-        nump = numi
+        nump *= numi
     s = p2+pij
     return s
 
 def main(k, n, r):
     r.sort()
-    s = getProduct(k, r)
+    s = getProduct(r, k)
     return s*math.pi/num
         
 if __name__ == "__main__":
