@@ -1,6 +1,6 @@
 import math
 import cProfile
-from _ast import Num
+import numpy as np
 
 def getArea(r):
     area = 0
@@ -83,10 +83,9 @@ def getSquare(r, k):
 
 def getProduct(r, k):
     n = len(r)
-    x2 = 0
+    x2 = np.dot(r, r)
     xij = 0;
     for i, s1 in enumerate(r):
-        x2 += s1*s1
         for j in range(i+1, n):
             xij += s1*r[j]
     num = n*(n-1)//2
@@ -105,11 +104,11 @@ def getProduct(r, k):
         pij = 2*xij*c1
         nump *= numi
     s = p2+pij
-    return s
+    return s, num
 
 def main(k, n, r):
     r.sort()
-    s = getProduct(r, k)
+    s, num = getProduct(r, k)
     return s*math.pi/num
         
 if __name__ == "__main__":
