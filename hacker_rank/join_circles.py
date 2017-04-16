@@ -2,12 +2,16 @@ import math
 import cProfile
 
 def getProduct(r):
-    p = 0
     n = len(r)
-    for x1 in range(n):
-        p += x1*x1*(n-1)
-        for x2 in range(x1, n):
-            p += x1*x2
+    if n==0:
+        return 0
+    elif n==1:
+        return r[0]
+    p = 0
+    for x1 in r:
+        p += x1*x1*((n-1)*n/2-2)
+        for x2 in r:
+            p += 2*x1*x2
     return p
 
 def getCombinations(iterable, r):
