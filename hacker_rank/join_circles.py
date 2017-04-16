@@ -1,11 +1,14 @@
 import math
 import cProfile
 
-def getArea(r):
-    area = 0
-    for x in r:
-        area += x*x
-    return area
+def getProduct(r):
+    p = 0
+    n = len(r)
+    for x1 in range(n):
+        p += x1*x1*(n-1)
+        for x2 in range(x1, n):
+            p += x1*x2
+    return p
 
 def getCombinations(iterable, r):
     pool = tuple(iterable)
@@ -44,26 +47,29 @@ def getCombinations(iterable, r):
         yield combo
 
 def combinationParentG(r, k):
-    indices = [None]*k
-    combos = [None]*k
+    if k==1:
+        yield getProduct(r)
+        return
+    indices = [None]*(k-1)
+    combos = [None]*(k-1)
     combos[0] = getCombinations(r, 2)
     indices[0] = next(combos[0], None)
-    for i in range(1, k):
+    for i in range(1, k-1):
         combos[i] = getCombinations(indices[i-1], 2)
         indices[i] = next(combos[i], None)
     while True:
-        for i in reversed(range(k)):
+        for i in reversed(range(k-1)):
             if indices[i] != None:
                 break
         else:
             return
-        yield indices[i]
+        yield getProduct(indices[i-1])
         indices[i] = next(combos[i], None)
         if indices[i] == None:
             for j in reversed(range(i)):
                 indices[j] = next(combos[j], None)
                 if indices[j] != None:
-                    for x in range(j+1, k):
+                    for x in range(j+1, k-1):
                         combos[x] = getCombinations(indices[x-1], 2)
                         indices[x] = next(combos[x], None)
                     break
@@ -79,13 +85,13 @@ def main(k, n, r):
     area = 0
     length = 0
     for i in combinationParentG(r, k):
-        area += getArea(i)
+        area += i
         length += 1
     return (area*math.pi)/length
 
 if __name__ == "__main__":
     k = 2
-    n = 10
+    n = 100
     r = [x+1 for x in range(n)]
     cProfile.run("main(k,n,r)")
 #     a = main(k, n, r)
