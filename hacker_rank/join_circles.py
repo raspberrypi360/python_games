@@ -1,18 +1,12 @@
 import math
 import cProfile
+from _ast import Num
 
-def getProduct(r):
-    n = len(r)
-    if n==0:
-        return 0
-    elif n==1:
-        return r[0]
-    p = 0
-    for x1 in r:
-        p += x1*x1*((n-1)*n/2-2)
-        for x2 in r:
-            p += 2*x1*x2
-    return p
+def getArea(r):
+    area = 0
+    for x in r:
+        area += x*x
+    return area
 
 def getCombinations(iterable, r):
     pool = tuple(iterable)
@@ -51,29 +45,26 @@ def getCombinations(iterable, r):
         yield combo
 
 def combinationParentG(r, k):
-    if k==1:
-        yield getProduct(r)
-        return
-    indices = [None]*(k-1)
-    combos = [None]*(k-1)
+    indices = [None]*k
+    combos = [None]*k
     combos[0] = getCombinations(r, 2)
     indices[0] = next(combos[0], None)
-    for i in range(1, k-1):
+    for i in range(1, k):
         combos[i] = getCombinations(indices[i-1], 2)
         indices[i] = next(combos[i], None)
     while True:
-        for i in reversed(range(k-1)):
+        for i in reversed(range(k)):
             if indices[i] != None:
                 break
         else:
             return
-        yield getProduct(indices[i-1])
+        yield indices[i]
         indices[i] = next(combos[i], None)
         if indices[i] == None:
             for j in reversed(range(i)):
                 indices[j] = next(combos[j], None)
                 if indices[j] != None:
-                    for x in range(j+1, k-1):
+                    for x in range(j+1, k):
                         combos[x] = getCombinations(indices[x-1], 2)
                         indices[x] = next(combos[x], None)
                     break
@@ -84,18 +75,40 @@ def numCombos(r, k):
         length += 1
     return length
 
+def getProduct(k,r):
+    n = len(r)
+    x2 = 0
+    xij = 0;
+    for i, s1 in enumerate(r):
+        x2 += s1*s1
+        for j in range(i+1, n):
+            xij += s1*r[j]
+    num = n*(n-1)//2
+    p2 = num*x2
+    pij = 2*xij
+    c1 = 1
+    nump = 1
+    for i in reversed(range(1, k)):
+        ni = n-i
+        numi = ni*(ni-1)//2
+        num *= numi
+        p2 *= numi
+        nn = ni+1
+        numn = nn*(nn-1)//2
+        c1 = numi*nump-1+numn*c1
+        pij = 2*xij*c1
+        nump = numi
+    s = p2+pij
+    return s
+
 def main(k, n, r):
     r.sort()
-    area = 0
-    length = 0
-    for i in combinationParentG(r, k):
-        area += i
-        length += 1
-    return (area*math.pi)/length
-
+    s = getProduct(k, r)
+    return s*math.pi/num
+        
 if __name__ == "__main__":
     k = 2
-    n = 100
+    n = 10
     r = [x+1 for x in range(n)]
     cProfile.run("main(k,n,r)")
 #     a = main(k, n, r)
